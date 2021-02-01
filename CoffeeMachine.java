@@ -2,7 +2,7 @@ package machine;
 import java.util.Scanner;
 
 public class CoffeeMachine {
-
+// поля класса
     int water = 400;
     int milk = 540;
     int beans = 120;
@@ -10,35 +10,54 @@ public class CoffeeMachine {
     int money = 550;
 
     public static void main(String[] args) {
-
+        
+        // создание необходимых объектов 
         CoffeeMachine coffeeMachine = new CoffeeMachine();
         Scanner scanner = new Scanner(System.in);
+        
+        // инициализация пустой строки, во избежание исключения
         String a = "";
-
+        
+        //вечный цикл работы машины, выход из которого производится когда входит строка "exit"
         while (true) {
+            
             System.out.println("Write action (buy, fill, take, remaining, exit):");
             a = scanner.next();
+            
             if (a.equals("buy")) {
                 coffeeMachine.buyFunc(scanner);
+                
             } else if (a.equals("take")) {
+                //вывод для сбора кассы и обновления полей экземпляра
                 System.out.println("I gave you $" + coffeeMachine.money);
                 coffeeMachine.money = 0;
+                
             } else if (a.equals("fill")) {
+                //ряд выводов для соответственного взаимодействия с пользователем при выборе опции "fill"
+                //обновление полей экземпляра 
+                
                 System.out.println("Write how many ml of water do you want to add:");
                 int w = scanner.nextInt();
                 coffeeMachine.water += w;
+                
                 System.out.println("Write how many ml of milk do you want to add:");
                 int m = scanner.nextInt();
                 coffeeMachine.milk += m;
+                
                 System.out.println("Write how many grams of coffee beans do you want to add:");
                 int cb = scanner.nextInt();
                 coffeeMachine.beans += cb;
+                
                 System.out.println("Write how many disposable cups of coffee do you want to add:");
                 int cups = scanner.nextInt();
                 coffeeMachine.cups += cups;
+                
             } else if (a.equals("exit")) {
+                //выход из цикла
                 break;
+                
             } else if (a.equals("remaining")) {
+                //вывод состояния полей машины
                 coffeeMachine.printState();
             }
         }
@@ -54,9 +73,12 @@ public class CoffeeMachine {
         System.out.println();
     }
 
+    //метод-посредник, функция "купить"
     public void buyFunc(Scanner scanner) {
         System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:");
         String b = scanner.next();
+        
+        // проверка ввода и соответственный вывод
         if (b.equals("1")) {
             if (!checkEspresso()) {
                 buyEspresso();
@@ -78,6 +100,7 @@ public class CoffeeMachine {
         } else if (b.equals("back")) {}
     }
 
+    //методы для обновления значений полей при покупке
     public void buyEspresso() {
         System.out.println("I have enough resources, making you a coffee!\n");
         this.water -= 250;
@@ -85,6 +108,7 @@ public class CoffeeMachine {
         this.money += 4;
         this.cups--;
     }
+    
     public void buyLatte() {
         System.out.println("I have enough resources, making you a coffee!\n");
         this.water -= 350;
@@ -93,6 +117,7 @@ public class CoffeeMachine {
         this.money += 7;
         this.cups--;
     }
+    
     public void buyCappuccino() {
         System.out.println("I have enough resources, making you a coffee!\n");
         this.water -= 200;
@@ -101,6 +126,8 @@ public class CoffeeMachine {
         this.money += 6;
         this.cups--;
     }
+    
+    //методы проверки необходимых ингридиентов и инвентаря для приготовления соответственной чашки кофе
     public boolean checkEspresso() {
         return (this.water - 250) < 0 || (this.beans - 16) < 0 || (this.cups - 1) < 0;
     }
@@ -110,6 +137,8 @@ public class CoffeeMachine {
     public boolean checkCappuccino() {
         return (this.water - 200) < 0 || (this.beans - 12) < 0 || (this.cups - 1) < 0 || (this.milk - 100) < 0;
     }
+    
+    //методы которые возвращают проблему, если такова имеется (какого ингридиента не хватает)
     public String returnProblemEspresso() {
         if (this.water - 250 < 0) {
             return "Sorry, not enough water!";
@@ -120,6 +149,7 @@ public class CoffeeMachine {
         }
         return "";
     }
+    
     public String returnProblemLatte() {
         if (this.water - 350 < 0) {
             return "Sorry, not enough water!";
@@ -132,6 +162,7 @@ public class CoffeeMachine {
         }
         return "";
     }
+    
     public String returnProblemCappuccino() {
         if (this.water - 200 < 0) {
             return "Sorry, not enough water!";
@@ -144,5 +175,4 @@ public class CoffeeMachine {
         }
         return "";
     }
-
 }
